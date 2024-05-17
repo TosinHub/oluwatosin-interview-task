@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const config = require("config");
 const request = require("request");
 const { promisifyRequest } = require("../utils/");
-const { collectUniqueCompanyIds } = require("../utils/helpers");
+const { collectUniqueCompanyIds, companyCache } = require("../utils/helpers");
 
 const app = express();
 
@@ -31,10 +31,24 @@ app.get("/generate-csv", async () => {
     );
 
     const uniqueCompanyIds = collectUniqueCompanyIds(investments);
-
-    for (const id of uniqueCompanyIds){
-          await fetchCompanyDetails(id);
+    // Fetch details of all unique company ids
+    for (const id of uniqueCompanyIds) {
+      await fetchCompanyDetails(id);
     }
+
+    // Generate CSV
+    let csv = "|User|First Name|Last Name|Date|Holding|Value|\n";
+    investments.forEach((investment) => {
+      investment.holdings.forEach((holding) => {
+        const company = companyCache[holding.id];
+        const value = investment.investmentTotal * holding.investmentPercentage;
+        csv += `|${investment.userId}|${investment.firstName}|${
+          investment.lastName
+        }|${investment.date}|${company.name}|${value.toFixed(2)}|\n`;
+      });
+    });
+
+
   } catch (error) {
     console.error("Error generating CSV", error);
     res.status(500).send("Error generating CSV");

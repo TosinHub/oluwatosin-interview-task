@@ -1,6 +1,21 @@
 const config = require("config");
 const { promisifyRequest } = require("./index");
 
+// Cache for storing fetched company details
+const companyCache = {}
+
+/**
+ * Clears the company cache every hour to prevent stale data.
+ */
+function startCacheClearInterval() {
+  const hour = 3600000
+  setInterval(() => {
+    for (const key in companyCache) {
+      delete companyCache[key]
+    }
+  }, hour)
+}
+
 /**
  * Collects unique company IDs from the given investments.
  * @param {Array} investments - The investments to collect unique company IDs from.
@@ -36,7 +51,11 @@ async function fetchCompanyDetails(id) {
   }
 }
 
+//Starts when service server starts running
+startCacheClearInterval();
+
 module.exports = {
   collectUniqueCompanyIds,
   fetchCompanyDetails,
+  companyCache
 };
