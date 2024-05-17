@@ -64,6 +64,24 @@ app.get("/generate-csv", async () => {
         if (error) {
           throw Error(error);
         }
+
+        // Send CSV to the investments /export route as JSON
+        request(
+          {
+            url: `${config.investmentsServiceUrl}/investments/export`,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ csv }),
+          },
+          (error) => {
+            if (error) {
+              throw Error(error);
+            }
+            // Return CSV as text/csv to admin
+            res.header("Content-Type", "text/csv");
+            res.send(csv);
+          }
+        );
       }
     );
   } catch (error) {
