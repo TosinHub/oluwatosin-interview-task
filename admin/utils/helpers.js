@@ -1,4 +1,5 @@
 const config = require("config");
+const R = require("ramda");
 const { promisifyRequest } = require("./index");
 
 // Cache for storing fetched company details
@@ -10,9 +11,7 @@ const companyCache = {};
 function startCacheClearInterval() {
   const hour = 3600000;
   setInterval(() => {
-    for (const key in companyCache) {
-      delete companyCache[key];
-    }
+    R.keys(companyCache).forEach((key) => delete companyCache[key]);
   }, hour);
 }
 
@@ -22,13 +21,9 @@ function startCacheClearInterval() {
  * @returns {Set} - A set of unique company IDs.
  */
 function collectUniqueCompanyIds(investments) {
-  const uniqueIds = new Set();
-  investments.forEach((investment) => {
-    investment.holdings.forEach((holding) => {
-      uniqueIds.add(holding.id);
-    });
-  });
-  return uniqueIds;
+  return new Set(
+    R.pipe(R.pluck("holdings"), R.flatten, R.pluck("id"))(investments)
+  );
 }
 
 /**
@@ -51,7 +46,7 @@ async function fetchCompanyDetails(id) {
   }
 }
 
-//Starts when service server starts running
+// Starts when service server starts running
 startCacheClearInterval();
 
 module.exports = {
