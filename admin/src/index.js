@@ -19,6 +19,16 @@ app.get("/investments/:id", (req, res) => {
   })
 })
 
+app.get("/generate-csv",async ()=>{
+    try {
+      
+    } catch (error) {
+        console.error("Error generating CSV", error)
+        res.status(500).send("Error generating CSV")
+    }
+} )
+
+
 app.listen(config.port, (err) => {
   if (err) {
     console.error("Error occurred starting the server", err)
