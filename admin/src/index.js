@@ -35,8 +35,6 @@ app.get("/generate-csv", async (req, res) => {
     );
 
     const uniqueCompanyIds = collectUniqueCompanyIds(investments);
-
-    
     // Fetch details of all unique company ids
     for (const id of uniqueCompanyIds) {
       await fetchCompanyDetails(id);
