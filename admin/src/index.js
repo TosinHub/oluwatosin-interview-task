@@ -31,6 +31,10 @@ app.get("/generate-csv", async () => {
     );
 
     const uniqueCompanyIds = collectUniqueCompanyIds(investments);
+
+    for (const id of uniqueCompanyIds){
+          await fetchCompanyDetails(id);
+    }
   } catch (error) {
     console.error("Error generating CSV", error);
     res.status(500).send("Error generating CSV");
