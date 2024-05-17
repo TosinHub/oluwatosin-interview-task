@@ -95,7 +95,7 @@ Admin - localhost:8083
 
 - `/generate-csv` get generated csv investment record
 
-### Running TScripts
+### Running Scripts
 
 ```bash
 npm install
