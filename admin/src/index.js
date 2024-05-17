@@ -2,6 +2,7 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const config = require("config")
 const request = require("request")
+const { promisifyRequest } = require("../utils/");
 
 const app = express()
 
@@ -21,7 +22,9 @@ app.get("/investments/:id", (req, res) => {
 
 app.get("/generate-csv",async ()=>{
     try {
-      
+
+      const investments = await promisifyRequest(`${config.investmentsServiceUrl}/investments`)
+
     } catch (error) {
         console.error("Error generating CSV", error)
         res.status(500).send("Error generating CSV")
