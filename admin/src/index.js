@@ -3,7 +3,11 @@ const bodyParser = require("body-parser");
 const config = require("config");
 const request = require("request");
 const { promisifyRequest } = require("../utils/");
-const { collectUniqueCompanyIds, companyCache } = require("../utils/helpers");
+const {
+  fetchCompanyDetails,
+  collectUniqueCompanyIds,
+  companyCache,
+} = require("../utils/helpers");
 
 const app = express();
 
@@ -48,7 +52,20 @@ app.get("/generate-csv", async () => {
       });
     });
 
-
+    // Send CSV to the investments /export route as JSON
+    request(
+      {
+        url: `${config.investmentsServiceUrl}/investments/export`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ csv }),
+      },
+      (error) => {
+        if (error) {
+          throw Error(error);
+        }
+      }
+    );
   } catch (error) {
     console.error("Error generating CSV", error);
     res.status(500).send("Error generating CSV");
