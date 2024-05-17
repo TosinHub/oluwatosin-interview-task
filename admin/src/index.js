@@ -28,13 +28,15 @@ app.get("/investments/:id", (req, res) => {
   );
 });
 
-app.get("/generate-csv", async () => {
+app.get("/generate-csv", async (req, res) => {
   try {
     const investments = await promisifyRequest(
       `${config.investmentsServiceUrl}/investments`
     );
 
     const uniqueCompanyIds = collectUniqueCompanyIds(investments);
+
+    
     // Fetch details of all unique company ids
     for (const id of uniqueCompanyIds) {
       await fetchCompanyDetails(id);

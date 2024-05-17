@@ -2,18 +2,18 @@ const config = require("config");
 const { promisifyRequest } = require("./index");
 
 // Cache for storing fetched company details
-const companyCache = {}
+const companyCache = {};
 
 /**
  * Clears the company cache every hour to prevent stale data.
  */
 function startCacheClearInterval() {
-  const hour = 3600000
+  const hour = 3600000;
   setInterval(() => {
     for (const key in companyCache) {
-      delete companyCache[key]
+      delete companyCache[key];
     }
-  }, hour)
+  }, hour);
 }
 
 /**
@@ -57,5 +57,5 @@ startCacheClearInterval();
 module.exports = {
   collectUniqueCompanyIds,
   fetchCompanyDetails,
-  companyCache
+  companyCache,
 };
