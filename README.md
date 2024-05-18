@@ -112,25 +112,24 @@ npm run test
 
 1. How might you make this service more secure?
 
-- **Dependency Updates:** Update dependencies to address security vulnerabilities.
-- **Authentication and Authorization:** Implement mechanisms to ensure that only authorized users, such as admins, can access sensitive routes like `/generate-csv`.
-- **Input Data Validation:** Validate input data to prevent injection attacks. Ensure that parameters, such as `id` in `/investments/:id`, are properly sanitized and validated.
-- **HTTPS Usage:** Encrypt data transmitted between the client and server by using HTTPS instead of HTTP.
-- **Rate Limiting:** Implement rate limiting to prevent abuse or denial-of-service attacks.
+- **Dependency Updates:** Update dependencies to address security vulnerabilities. For instance, the request has been deprecated.
+- **Authentication and Authorization:** Implement mechanisms to ensure only authorized users, such as admins, can access sensitive routes like `/generate-csv`.
+- **Input Data Validation:** Validate input data to prevent injection attacks. Ensure that parameters, such as `id` in `/investments/:id`, are properly sanitized and validated. Using typescript, for instance, can help with type validations
+- **HTTPS Usage:** Encrypt data transmitted between the client and server using HTTPS instead of HTTP. 
+
 
 2. How would you make this solution scale to millions of records?
 
-- **Optimize Database Queries:** Optimize database queries and indexing strategies for efficient data retrieval, especially for large datasets.
-- **Caching Mechanisms:** Implement caching mechanisms to reduce database load and improve response times for frequently accessed data.
-- **Distribute Workload:** Distribute workload across multiple servers using load balancing techniques.
-- **Horizontal Scaling:** Deploy the application across multiple servers or containers to handle increased traffic and workload.
+- **Optimize Database Queries:** Optimize database queries and indexing strategies for efficient data retrieval, especially for large datasets. This is considering the application is connected to a database(this will be the case in a commercially deployed API).
+- **Caching Mechanisms:** Implement caching mechanisms to reduce database load and improve response times for frequently accessed data. A tool like Redis is best suited for this purpose.
+- **Distribute Workload:** Distribute workload across multiple servers using load balancing techniques and tools like Kubernetes.
 - **Asynchronous Processing:** Implement asynchronous processing for non-blocking tasks, such as fetching company details or generating CSV reports, to improve throughput and responsiveness.
 - **Performance Monitoring:** Regularly monitor and analyze performance metrics to identify bottlenecks and areas for optimization.
 
 3. What else would you have liked to improve given more time?
 
-- **Pagination:** Implement pagination to limit the number of records returned per request. This prevents overwhelming the server and improves performance.
-- **Transition to TypeScript:** Transition the project to TypeScript to provide static typing, enhancing code robustness, and developer productivity.
+- **Pagination:** Implement pagination to limit the number of records returned per request. This prevents overwhelming the server and improves performance. 
+- **Transition to TypeScript:** Transition the project to TypeScript to provide static typing, enhancing code robustness, and productivity.
 - **Controller and Model Integration:** Introduce controllers to organize request handling logic and models to represent data structures, promoting separation of concerns and improving code maintainability.
 - **Ramda.js Integration:** Utilize Ramda.js more to leverage functional programming utilities for simplifying operations like data transformation or filtering.
 - **Integration Testing:** Implement integration tests to ensure the reliability and correctness of critical functionalities, such as generating the CSV report.
